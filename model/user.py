@@ -1,4 +1,4 @@
-from model import Model
+from model.model import Model
 
 class User(Model):
     def __init__(self, name, email):
@@ -8,7 +8,7 @@ class User(Model):
 
     @property
     def name(self):
-        return self.name
+        return self._name
     
     @name.setter
     def name(self, value):

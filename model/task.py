@@ -2,11 +2,12 @@ from model.model import Model
 
 class Task(Model):
     
-    def __init__(self, title, status, assigned_to):
+    def __init__(self, title, status, assigned_to,project):
         super().__init__()
         self.title = title
         self.status = status
         self.assigned_to = assigned_to
+        self.project = project
 
     #title property
     @property 
@@ -19,7 +20,7 @@ class Task(Model):
             raise ValueError("Title cannot be empty")
         self._title =value
 
-    #status property
+    
     @property
     def status(self):
         return self._status

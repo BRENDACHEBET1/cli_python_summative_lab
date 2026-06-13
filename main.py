@@ -1,66 +1,120 @@
 import argparse
+from datetime import datetime
 
 #import classes
 from model.user import User
 from model.project import Project
 from model.task import Task
 
-#temporary data storage
-users = []
-projects = []
-tasks = []
+from utils import (load_data, save_data, find_user,)
+
+#Data from json
+users = load_data("data/users.json")
+projects = load_data("data/projects.json")
+tasks = load_data("data/tasks.json")
+
+
 
 #cli actions
 def add_user(args):
     """ Create a new user object"""
-    user = User(args.name, args.email)
+    user = {
+        "id": len(users) + 1,
+        "name": args.name,
+        "email": args.email
+    }
+    
     users.append(user)
+    save_data("data/users.json", users)
 
-    print(f'User created: {user}')
+    print(f'User created: {user['name']} ({user['email']})')
 
 
 def list_users(args):
     """ display all the users"""
+
     if not users:
         print("No users found")
         return
     
     for user in users:
-        print(f"User {user.id}: {user.name} {user.email}")
+        print(f"User {user['id']}: {user['name']} {user['email']}")
 
 #Project functions
 def add_project(args):
-    project = Project(args.name, args.description, args.due_date)
+
+    user = next((user for user in users if user["email"] == args.user_email), None)
+
+    if not user:
+        print("User not found")
+        return
+
+    project = {
+        "id": len(projects) + 1,
+        "title": args.title,
+        "description": args.description,
+        "due_date": args.due_date,
+        "user_email": args.user_email
+    }
 
     projects.append(project)
+    save_data("data/projects.json", projects)
 
-    print(f"Project created: {project}")
-
+    print(f"Project created: {project['title']}")
 
 def list_projects(args):
+   
     #check if prjects exist
     if not projects:
         print("No projects found.")
         return
     for project in projects:
-        print(f"Project {project.id}: {project.title}")
+        user = next((user for user in users if user["email"] == project["user_email"]), None)
+        owner = user["name"] if user else "Unassigned"
+
+        print(f"{project['id']}: {project['title']} | {owner}")
 
 #Task functions
 def add_task(args):
-    task = Task(args.title, "Pending", args.assigned_to)
+    project = next((project for project in projects if project["id"] == args.project_id), None)
+    user = next((user for user in users if user["email"] == args.assigned_to), None)
+
+    if not project:
+        print("Project not found")
+        return
+
+    user = find_user(users, args.assigned_to)
+    if not user:
+        print("User not found")
+        return
+
+    task = {
+        "id": len(tasks) + 1,
+        "title": args.title,
+        "status": "pending",
+        "project_id": args.project_id,
+        "assigned_to": args.assigned_to
+    }
+    
+
     tasks.append(task)
-    print(f"Task created: {task}")
+    save_data("data/tasks.json", tasks)
+
+    print(f"Task created: {task['title']}")
 
 def complete_task(args):
-    """loop through tasks"""
-    for task in tasks:
-        if task.id == args.task_id:
-            #set status to complete
-            task.status = "Completed"
-            print("Task marked as complete")
-            return
-    #If task does not exist
-    print("Task not found.")    
+    task = next((task for task in tasks if task["id"] == args.task_id), None)
+
+    if not task:
+        print("Task not found")
+        return
+
+    task['status'] = "completed"
+
+    save_data("data/tasks.json", tasks)
+
+    print(f"Task {task['title']} completed")
+
     
 
 #Command setup: cli
@@ -83,9 +137,10 @@ def main():
     #Project actions
     #subparser for adding a project
     project_parser = subparsers.add_parser("add-project")
-    project_parser.add_argument("name")
+    project_parser.add_argument("title")
     project_parser.add_argument("description")
     project_parser.add_argument("due_date")
+    project_parser.add_argument("user_email")
     project_parser.set_defaults(func=add_project)
 
     # listing-projects
@@ -98,6 +153,7 @@ def main():
     task_parser = subparsers.add_parser("add-task")
     task_parser.add_argument("title")
     task_parser.add_argument("assigned_to")
+    task_parser.add_argument("project_id", type=int)
     task_parser.set_defaults(func=add_task)
 
     # # Command: list-tasks

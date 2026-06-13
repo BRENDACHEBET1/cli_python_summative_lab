@@ -1,26 +1,33 @@
 from model import Model
 
 class Task(Model):
-    super().__init__()
-    def __init__(self, title, status, assigned_to):
+    
+    def __init__(self, title, status, assigned_to, project):
+        super().__init__()
         self.title = title
         self.status = status
         self.assigned_to = assigned_to
+        self.project = project
 
     @property 
     def title(self):
-        return self.title
+        return self._title
     
     @title.setter
     def title(self, value):
         if not value.strip():
             raise ValueError("Title cannot be empty")
-        self.title =value
+        self._title =value
 
+    @property
     def status(self):
-        return self.status
+        return self._status
     
-    def assigned_to(self):
-        return self.assigned_to
+    @status.setter
+    def status(self, value):
+        allowed = ["Pending", "In Progress", "Completed"]
+        if value not in allowed:
+            raise ValueError(f"Status must be one of {allowed}")
+        self._status = value
 
         

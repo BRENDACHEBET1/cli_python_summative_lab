@@ -55,16 +55,23 @@ python main.py add-user --name "brenda" --email brenda@gmail.com
 python main.py list-users
 
 ### Add Project
-python main.py add-project "Project Title" "Project Description" 2026-12-31 brenda@gmail.com
+python main.py add-project \
+    --title "Project Title" \
+    --description "Project Description" \
+    --due-date 2026-12-31 \
+    --user-email brenda@gmail.com
 
-### List users
+### List projects
 python main.py list-projects
 
 ### Add Task
-python main.py add-task "Task Title" brenda@gmail.com "Project Title"
+python main.py add-task \
+    --title "Task Title" \
+    --assigned-to brenda@gmail.com \
+    --project-title "Project Title"
 
 ### Complete task
-python main.py complete-task "Task Title"
+python main.py complete-task --task-title "Task Title"
 
 ### Author
 Brenda Chebet

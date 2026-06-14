@@ -36,3 +36,20 @@ class User(Model):
 
     def add_project(self, project):
         self._projects.append(project)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "name": self.name,
+            "email": self.email
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        user = cls(data["name"], data["email"])
+        user._id = data.get("id", user.id)
+        return user
+    
+    @classmethod
+    def load_all(cls, data_list):
+        return [cls.from_dict(item) for item in data_list]

@@ -27,3 +27,28 @@ class Project(Model):
 
     def add_task(self, task):
         self._tasks.append(task)
+
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "description": self.description,
+            "due_date": self.due_date,
+            "user_email": self.user.email if self.user else None
+        }
+
+    @classmethod
+    def from_dict(cls, data):
+        project = cls(
+            data["title"],
+            data["description"],
+            data["due_date"],
+            None  # user assigned in main.py
+        )
+        project._id = data.get("id", project.id)
+        return project
+
+    # collection
+    @classmethod
+    def load_all(cls, data_list):
+        return [cls.from_dict(item) for item in data_list]

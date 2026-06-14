@@ -2,12 +2,11 @@ from model.model import Model
 
 class Project(Model):
     
-    def __init__(self, title, description,due_date, user):
+    def __init__(self, title, description,due_date):
         super().__init__()
         self. title = title
         self.description = description
         self.due_date = due_date
-        self.user = user
         self._tasks = []
 
     @property
@@ -34,7 +33,8 @@ class Project(Model):
             "title": self.title,
             "description": self.description,
             "due_date": self.due_date,
-            "user_email": self.user.email if self.user else None
+            "tasks": [t.to_dict() for t in self.tasks]
+            
         }
 
     @classmethod
@@ -43,7 +43,7 @@ class Project(Model):
             data["title"],
             data["description"],
             data["due_date"],
-            None  # user assigned in main.py
+           
         )
         project._id = data.get("id", project.id)
         return project

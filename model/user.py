@@ -41,7 +41,8 @@ class User(Model):
         return {
             "id": self.id,
             "name": self.name,
-            "email": self.email
+            "email": self.email,
+            "projects": [p.to_dict() for p in self.projects]
         }
 
     @classmethod

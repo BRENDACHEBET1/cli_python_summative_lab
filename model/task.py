@@ -47,7 +47,7 @@ class Task(Model):
             "title": self.title,
             "status": self.status,
             "project_id": self.project.id if self.project else None,
-            "assigned_email": self.assigned_to.email if self.assigned_to else None
+            "assigned_email": self.assigned_to
         }
 
     @classmethod

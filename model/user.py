@@ -35,7 +35,11 @@ class User(Model):
         return self._projects
 
     def add_project(self, project):
-        self._projects.append(project)
+        if project not in self._projects:
+            self._projects.append(project)
+            print(f"Project '{project.title}' added to user {self.name}")
+        else:
+            print(f"Project '{project.title}' already exists for user {self.name}")
 
     def to_dict(self):
         return {

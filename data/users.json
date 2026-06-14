@@ -1,1 +1,16 @@
-[]
+[
+    {
+        "id": 1,
+        "name": "Brenda",
+        "email": "brenda@gmail.com",
+        "projects": [
+            {
+                "id": 1,
+                "title": "Website",
+                "description": "Portfolio site",
+                "due_date": "2026-07-01",
+                "tasks": []
+            }
+        ]
+    }
+]

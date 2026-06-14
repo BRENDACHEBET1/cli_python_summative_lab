@@ -47,7 +47,7 @@ class Task(Model):
             "title": self.title,
             "status": self.status,
             "project_id": self.project.id if self.project else None,
-            "assigned_email": self.assigned_to
+            "assigned_email": self.assigned_to 
         }
 
     @classmethod
@@ -55,7 +55,7 @@ class Task(Model):
         task = cls(
             data["title"],
             data["status"],
-            None,
+            data.get("assigned_email"),
             None
         )
         task._id = data.get("id", task.id)

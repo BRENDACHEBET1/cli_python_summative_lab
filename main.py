@@ -59,6 +59,7 @@ def add_project(args):
     projects.append(project)
     user.add_project(project)
     save_data(PROJECTS_FILE, [p.to_dict() for p in projects] )
+    save_data(USERS_FILE, [u.to_dict() for u in users])
 
     print(f"Project created: {project.title}")
 
@@ -83,11 +84,14 @@ def add_task(args):
         print("User not found")
         return
 
-    task = Task(args.title,"Pending",args.assigned_to, project)
+    task = Task(args.title,"Pending",user.email, project)
     
 
     tasks.append(task)
+    project.add_task(task)
+
     save_data(TASKS_FILE,  [t.to_dict() for t in tasks])
+    save_data(PROJECTS_FILE, [p.to_dict() for p in projects])
 
     print(f"Task created: {task.title}")
 
@@ -156,7 +160,7 @@ def main():
 
     args = parser.parse_args()
 
-    # If user typed a valid command, run it
+    # If user typed a valid command, run 
     if hasattr(args, "func"):
         args.func(args)
     else:

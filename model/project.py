@@ -25,7 +25,11 @@ class Project(Model):
         return self._tasks
 
     def add_task(self, task):
-        self._tasks.append(task)
+        if task not in self._tasks:
+            self._tasks.append(task)
+            print(f"Task '{task.title}' added to project '{self.title}'")
+        else:
+            print(f"Task '{task.title}' already exists in project '{self.title}'")
 
     def to_dict(self):
         return {

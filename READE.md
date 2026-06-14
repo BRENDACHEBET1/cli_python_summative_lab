@@ -8,7 +8,7 @@ It demonstrates object-oriented programming, CLI design using `argparse`, and da
 
 ##  Features
 
-### 👤 User Management
+###  User Management
 - Create users with name and email
 - Prevent duplicate users
 - List all users in a formatted table
@@ -46,27 +46,27 @@ cd cli_python_summative_lab
 # Install dependencies
 pip install -r requirements.txt
 
-# PROJECT COMMANDS
+## PROJECT COMMANDS
 
-# Create a user
+### Create a user
 python main.py add-user --name "brenda" --email brenda@gmail.com
 
-# List all users
+### List all users
 python main.py list-users
 
-# Add Project
+### Add Project
 python main.py add-project "Project Title" "Project Description" 2026-12-31 brenda@gmail.com
 
-# List users
+### List users
 python main.py list-projects
 
-# Add Task
+### Add Task
 python main.py add-task "Task Title" brenda@gmail.com "Project Title"
 
-# Complete task
+### Complete task
 python main.py complete-task "Task Title"
 
-# Author
+### Author
 Brenda Chebet
 
 

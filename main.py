@@ -122,7 +122,7 @@ def add_task(args):
     save_data(TASKS_FILE,  [t.to_dict() for t in tasks])
     save_data(PROJECTS_FILE, [p.to_dict() for p in projects])
 
-    print(f"[green] Task created:[/green] {task.title} [blue]{project.title}[/blue]")
+    print(f"[green] Task created:[/green] {task.title} [blue]Project:{project.title}[/blue]")
 
 
 
@@ -149,8 +149,8 @@ def main():
     #User actions
     #subparser for add-user
     user_parser = subparsers.add_parser("add-user")
-    user_parser.add_argument("name")
-    user_parser.add_argument("email")
+    user_parser.add_argument("--name", required=True, help="User name")
+    user_parser.add_argument("--email", required=True, help="User email")
     user_parser.set_defaults(func=add_user)
 
     #subparser for showing users
@@ -161,10 +161,10 @@ def main():
     #Project actions
     #subparser for adding a project
     project_parser = subparsers.add_parser("add-project")
-    project_parser.add_argument("title")
-    project_parser.add_argument("description")
-    project_parser.add_argument("due_date")
-    project_parser.add_argument("user_email")
+    project_parser.add_argument("--title", required=True)
+    project_parser.add_argument("--description", required=True)
+    project_parser.add_argument("--due-date", required=True)
+    project_parser.add_argument("--user-email", required=True)
     project_parser.set_defaults(func=add_project)
 
     # listing-projects
@@ -175,15 +175,15 @@ def main():
     #subparser for adding task
     # Command: add-task
     task_parser = subparsers.add_parser("add-task")
-    task_parser.add_argument("title")
-    task_parser.add_argument("assigned_to")
-    task_parser.add_argument("project_title")
+    task_parser.add_argument("--title", required=True)
+    task_parser.add_argument("--assigned-to", required=True)
+    task_parser.add_argument("--project-title", required=True)
     task_parser.set_defaults(func=add_task)
 
 
     # Command: complete-task
     complete_parser = subparsers.add_parser("complete-task")
-    complete_parser.add_argument("task_title")
+    complete_parser.add_argument("--task-title", required=True)
     complete_parser.set_defaults(func=complete_task)
 
 

@@ -6,11 +6,11 @@
         "due_date": "2026-07-01",
         "tasks": [
             {
-                "id": 8,
-                "title": "Build navbar",
+                "id": 10,
+                "title": "Design UI",
                 "status": "Pending",
                 "project_id": 1,
-                "assigned_email": "brenda@gmail.com"
+                "assigned_email": "john@example.com"
             }
         ]
     },
@@ -27,12 +27,6 @@
         "description": "Portfolio site",
         "due_date": "2026-07-01",
         "tasks": []
-    },
-    {
-        "id": 4,
-        "title": "Website",
-        "description": "Portfolio site",
-        "due_date": "2026-07-01",
-        "tasks": []
     }
+    
 ]

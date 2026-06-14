@@ -19,40 +19,6 @@
         "status": "Pending",
         "project_id": null,
         "assigned_email": "brenda@gmail.com"
-    },
-    {
-        "id": 4,
-        "title": "Build navbar",
-        "status": "Pending",
-        "project_id": null,
-        "assigned_email": "brenda@gmail.com"
-    },
-    {
-        "id": 5,
-        "title": "Design homepage",
-        "status": "Pending",
-        "project_id": null,
-        "assigned_email": "brenda@gmail.com"
-    },
-    {
-        "id": 6,
-        "title": "Build navbar",
-        "status": "Pending",
-        "project_id": null,
-        "assigned_email": "brenda@gmail.com"
-    },
-    {
-        "id": 7,
-        "title": "Design homepage",
-        "status": "Pending",
-        "project_id": null,
-        "assigned_email": "brenda@gmail.com"
-    },
-    {
-        "id": 8,
-        "title": "Build navbar",
-        "status": "Pending",
-        "project_id": null,
-        "assigned_email": "brenda@gmail.com"
     }
+    
 ]

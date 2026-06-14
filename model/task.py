@@ -1,9 +1,14 @@
-from model.model import Model
 
-class Task(Model):
-    
+
+class Task():
+    #class atribute
+    _id_counter = 1
+
     def __init__(self, title, status, assigned_to,project):
-        super().__init__()
+         # Assign unique ID
+        self.id = Task._id_counter
+        Task._id_counter += 1
+
         self.title = title
         self.status = status
         self.assigned_to = assigned_to
@@ -20,7 +25,7 @@ class Task(Model):
             raise ValueError("Title cannot be empty")
         self._title =value
 
-    
+    #status property
     @property
     def status(self):
         return self._status
@@ -41,6 +46,7 @@ class Task(Model):
     def assigned_to(self, value):
         self._assigned_to = value
 
+    #json storage
     def to_dict(self):
         return {
             "id": self.id,
@@ -50,6 +56,7 @@ class Task(Model):
             "assigned_email": self.assigned_to 
         }
 
+    #distionary to task object
     @classmethod
     def from_dict(cls, data):
         task = cls(
@@ -58,7 +65,10 @@ class Task(Model):
             data.get("assigned_email"),
             None
         )
-        task._id = data.get("id", task.id)
+        task.id = data.get("id", task.id)
+        if task.id >= cls._id_counter:
+            cls._id_counter = task.id + 1
+
         return task
 
     # object collection

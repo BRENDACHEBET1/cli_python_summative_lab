@@ -14,7 +14,7 @@ PROJECTS_FILE = "data/projects.json"
 TASKS_FILE = "data/tasks.json"
 
 
-# Load data (raw JSON → objects)
+# Load data from json fles to objects
 users = User.load_all(load_data(USERS_FILE))
 projects = Project.load_all(load_data(PROJECTS_FILE))
 tasks = Task.load_all(load_data(TASKS_FILE))
@@ -25,10 +25,15 @@ tasks = Task.load_all(load_data(TASKS_FILE))
 #user functions
 def add_user(args):
     """ Create a new user object"""
-    user = User( args.name, args.email)
+    """Prevent duplicate users"""
+    for user in users:
+        if user.email == args.email:
+            print("User already exists")
+            return
     
-
+    user = User( args.name, args.email)
     users.append(user)
+
     save_data(USERS_FILE, [u.to_dict() for u in users])
 
     print(f"User created: {user.name} ({user.email})")
@@ -46,7 +51,7 @@ def list_users(args):
 
 #Project functions
 def add_project(args):
-
+    """find user  who owns project"""
     user = next((user for user in users if user.email == args.user_email), None)
 
     if not user:
@@ -70,7 +75,7 @@ def list_projects(args):
         print("No projects found.")
         return
     for project in projects:
-        print(f"{project.id}: Project Title: {project.title}, Project Description {project.description}")
+        print(f"{project.id}: Project Title: {project.title}, Project Description: {project.description}")
 #Task functions
 def add_task(args):
     project = next((project for project in projects if project.title == args.project_title), None)
@@ -86,14 +91,14 @@ def add_task(args):
 
     task = Task(args.title,"Pending",user.email, project)
     
-
+    task.project = project
     tasks.append(task)
     project.add_task(task)
 
     save_data(TASKS_FILE,  [t.to_dict() for t in tasks])
     save_data(PROJECTS_FILE, [p.to_dict() for p in projects])
 
-    print(f"Task created: {task.title}")
+    print(f"Task created: {task.title} and added to {project.title}")
 
 
 

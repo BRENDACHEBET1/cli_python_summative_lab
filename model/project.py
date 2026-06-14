@@ -1,12 +1,17 @@
-from model.model import Model
 
-class Project(Model):
-    
+
+class Project():
+    _id_counter = 1
+
     def __init__(self, title, description,due_date):
-        super().__init__()
-        self. title = title
+        #Unique id
+        self.id = Project._id_counter
+        Project._id_counter += 1
+
+        self.title = title
         self.description = description
         self.due_date = due_date
+        #Each project has multiple tasks
         self._tasks = []
 
     @property
@@ -27,10 +32,11 @@ class Project(Model):
     def add_task(self, task):
         if task not in self._tasks:
             self._tasks.append(task)
-            print(f"Task '{task.title}' added to project '{self.title}'")
+           
         else:
             print(f"Task '{task.title}' already exists in project '{self.title}'")
 
+    # Convert Project → dictionary for saving JSON
     def to_dict(self):
         return {
             "id": self.id,
@@ -41,6 +47,7 @@ class Project(Model):
             
         }
 
+     # Convert dictionary → Project object
     @classmethod
     def from_dict(cls, data):
         project = cls(
@@ -49,7 +56,10 @@ class Project(Model):
             data["due_date"],
            
         )
-        project._id = data.get("id", project.id)
+        project.id = data.get("id", project.id)
+        if project.id >= cls._id_counter:
+            cls._id_counter = project.id + 1
+
         return project
 
     # collection

@@ -66,3 +66,6 @@ class Project():
     @classmethod
     def load_all(cls, data_list):
         return [cls.from_dict(item) for item in data_list]
+    
+    def __repr__(self):
+        return f"Project(id={self.id}, title={self.title}, due_date={self.due_date})"

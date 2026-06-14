@@ -15,3 +15,6 @@ class Person:
         if "@" not in value:
             raise ValueError("Invalid email")
         self._email = value
+
+    def __repr__(self):
+        return f"Person(name={self.name}, email={self.email})"

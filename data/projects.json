@@ -6,8 +6,8 @@
         "due_date": "2026-07-01",
         "tasks": [
             {
-                "id": 15,
-                "title": "Style page",
+                "id": 6,
+                "title": "Build navbar",
                 "status": "Pending",
                 "project_id": 1,
                 "assigned_email": "brenda@gmail.com"
@@ -23,20 +23,6 @@
     },
     {
         "id": 3,
-        "title": "Website",
-        "description": "Portfolio site",
-        "due_date": "2026-07-01",
-        "tasks": []
-    },
-    {
-        "id": 4,
-        "title": "Website",
-        "description": "Portfolio site",
-        "due_date": "2026-07-01",
-        "tasks": []
-    },
-    {
-        "id": 5,
         "title": "Website",
         "description": "Portfolio site",
         "due_date": "2026-07-01",

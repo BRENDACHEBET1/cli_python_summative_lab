@@ -77,6 +77,8 @@ class Task():
         return [cls.from_dict(item) for item in data_list]
 
         
+    def __repr__(self):
+        return f"Task(id={self.id}, title={self.title}, status={self.status})"
 
 
 

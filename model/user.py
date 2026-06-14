@@ -52,3 +52,6 @@ class User(Person):
     @classmethod
     def load_all(cls, data_list):
         return [cls.from_dict(item) for item in data_list]
+    
+    def __repr__(self):
+        return f"User(id={self.id}, name={self.name}, email={self.email})"

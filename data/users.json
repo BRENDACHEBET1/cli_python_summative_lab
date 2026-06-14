@@ -5,12 +5,24 @@
         "email": "brenda@gmail.com",
         "projects": [
             {
-                "id": 5,
+                "id": 3,
                 "title": "Website",
                 "description": "Portfolio site",
                 "due_date": "2026-07-01",
                 "tasks": []
             }
         ]
+    },
+    {
+        "id": 2,
+        "name": "chebet",
+        "email": "chebet@gmail.com",
+        "projects": []
+    },
+    {
+        "id": 3,
+        "name": "John",
+        "email": "john@gmail.com",
+        "projects": []
     }
 ]

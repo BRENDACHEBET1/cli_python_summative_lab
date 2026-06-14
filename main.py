@@ -1,4 +1,10 @@
+from rich import print
+from rich.console import Console
+from rich.table import Table
+
+console = Console()
 import argparse
+
 from datetime import datetime
 
 #import classes
@@ -28,7 +34,7 @@ def add_user(args):
     """Prevent duplicate users"""
     for user in users:
         if user.email == args.email:
-            print("User already exists")
+            print("[red]User already exists[/red]")
             return
     
     user = User( args.name, args.email)
@@ -36,18 +42,27 @@ def add_user(args):
 
     save_data(USERS_FILE, [u.to_dict() for u in users])
 
-    print(f"User created: {user.name} ({user.email})")
+    print(f"[yellow]User created[/yellow]: [green]{user.name} ({user.email})[/green]")
 
 
 def list_users(args):
     """ display all the users"""
 
     if not users:
-        print("No users found")
+        print("[red]No users found[/red]")
         return
     
+    table = Table(title="Users")
+
+    table.add_column("ID", style="cyan")
+    table.add_column("Name", style="green")
+    table.add_column("Email", style="magenta")
+
     for user in users:
-        print(f"User {user.id}: {user.name} {user.email}")
+        table.add_row(str(user.id), user.name, user.email)
+
+    console.print(table)
+
 
 #Project functions
 def add_project(args):
@@ -66,7 +81,7 @@ def add_project(args):
     save_data(PROJECTS_FILE, [p.to_dict() for p in projects] )
     save_data(USERS_FILE, [u.to_dict() for u in users])
 
-    print(f"Project created: {project.title}")
+    print(f"[yellow]Project created:[/yellow] [green]Title: {project.title}[/green]")
 
 def list_projects(args):
    
@@ -74,9 +89,18 @@ def list_projects(args):
     if not projects:
         print("No projects found.")
         return
+    
+    table = Table(title="Projects")
+
+    table.add_column("ID", style="cyan")
+    table.add_column("Title", style="green")
+    table.add_column("Description", style="white")
+
     for project in projects:
-        print(f"{project.id}: Project Title: {project.title}, Project Description: {project.description}")
-#Task functions
+        table.add_row(str(project.id), project.title, project.description)
+
+    console.print(table)
+
 def add_task(args):
     project = next((project for project in projects if project.title == args.project_title), None)
     
@@ -98,7 +122,7 @@ def add_task(args):
     save_data(TASKS_FILE,  [t.to_dict() for t in tasks])
     save_data(PROJECTS_FILE, [p.to_dict() for p in projects])
 
-    print(f"Task created: {task.title} and added to {project.title}")
+    print(f"[green] Task created:[/green] {task.title} [blue]{project.title}[/blue]")
 
 
 
@@ -112,7 +136,7 @@ def complete_task(args):
     task.status = "Completed"
     save_data(TASKS_FILE, [t.to_dict() for t in tasks])
 
-    print(f"Task '{task.title}' completed")
+    print(f"[yellow]Task [/yellow]'[green]{task.title}' completed[/green]")
 
     
     

@@ -8,21 +8,28 @@ from model.task import Task
 
 from utils import (load_data, save_data, find_user,)
 
+#file paths
+USERS_FILE = "data/users.json"
+PROJECTS_FILE = "data/projects.json"
+TASKS_FILE = "data/tasks.json"
+
 #Data from json
 users = load_data("data/users.json")
 projects = load_data("data/projects.json")
 tasks = load_data("data/tasks.json")
+
+#Load objetc
+users = User.load_all(load_data(USERS_FILE))
+projects = Project.load_all(load_data(PROJECTS_FILE))
+tasks = Task.load_all(load_data(TASKS_FILE))
 
 
 
 #cli actions
 def add_user(args):
     """ Create a new user object"""
-    user = {
-        "id": len(users) + 1,
-        "name": args.name,
-        "email": args.email
-    }
+    user =User(args.name, args.email)
+    user.id = len(users) + 1 
     
     users.append(user)
     save_data("data/users.json", users)
@@ -49,13 +56,8 @@ def add_project(args):
         print("User not found")
         return
 
-    project = {
-        "id": len(projects) + 1,
-        "title": args.title,
-        "description": args.description,
-        "due_date": args.due_date,
-        "user_email": args.user_email
-    }
+    project = Project(args.title, args.description, args.due_date, user)
+    project.id = len(projects) + 1
 
     projects.append(project)
     save_data("data/projects.json", projects)

@@ -41,6 +41,29 @@ class Task(Model):
     def assigned_to(self, value):
         self._assigned_to = value
 
+    def to_dict(self):
+        return {
+            "id": self.id,
+            "title": self.title,
+            "status": self.status,
+            "project_id": self.project.id if self.project else None,
+            "assigned_email": self.assigned_to.email if self.assigned_to else None
+        }
 
+    @classmethod
+    def from_dict(cls, data):
+        task = cls(
+            data["title"],
+            data["status"],
+            None,
+            None
+        )
+        task._id = data.get("id", task.id)
+        return task
+
+    # object collection
+    @classmethod
+    def load_all(cls, data_list):
+        return [cls.from_dict(item) for item in data_list]
 
         

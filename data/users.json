@@ -2,31 +2,15 @@
     {
         "id": 1,
         "name": "Brenda",
-        "email": "brenda@email.com"
-    },
-    {
-        "id": 2,
-        "name": "Brenda",
-        "email": "brenda@email.com"
-    },
-    {
-        "id": 3,
-        "name": "Brenda",
-        "email": "brenda@email.com"
-    },
-    {
-        "id": 4,
-        "name": "Brenda",
-        "email": "brenda@email.com"
-    },
-    {
-        "id": 5,
-        "name": "Brenda",
-        "email": "brenda@email.com"
-    },
-    {
-        "id": 6,
-        "name": "Brenda",
-        "email": "brenda@email.com"
+        "email": "brenda@gmail.com",
+        "projects": [
+            {
+                "id": 5,
+                "title": "Website",
+                "description": "Portfolio site",
+                "due_date": "2026-07-01",
+                "tasks": []
+            }
+        ]
     }
 ]

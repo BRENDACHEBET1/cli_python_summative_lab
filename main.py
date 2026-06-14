@@ -6,28 +6,37 @@ from model.user import User
 from model.project import Project
 from model.task import Task
 
-from utils import (load_data, save_data, find_user,)
+from utils import load_data, save_data
 
-#Data from json
-users = load_data("data/users.json")
-projects = load_data("data/projects.json")
-tasks = load_data("data/tasks.json")
+# File paths
+USERS_FILE = "data/users.json"
+PROJECTS_FILE = "data/projects.json"
+TASKS_FILE = "data/tasks.json"
+
+
+# Load data from json fles to objects
+users = User.load_all(load_data(USERS_FILE))
+projects = Project.load_all(load_data(PROJECTS_FILE))
+tasks = Task.load_all(load_data(TASKS_FILE))
 
 
 
 #cli actions
+#user functions
 def add_user(args):
     """ Create a new user object"""
-    user = {
-        "id": len(users) + 1,
-        "name": args.name,
-        "email": args.email
-    }
+    """Prevent duplicate users"""
+    for user in users:
+        if user.email == args.email:
+            print("User already exists")
+            return
     
+    user = User( args.name, args.email)
     users.append(user)
-    save_data("data/users.json", users)
 
-    print(f'User created: {user['name']} ({user['email']})')
+    save_data(USERS_FILE, [u.to_dict() for u in users])
+
+    print(f"User created: {user.name} ({user.email})")
 
 
 def list_users(args):
@@ -38,29 +47,26 @@ def list_users(args):
         return
     
     for user in users:
-        print(f"User {user['id']}: {user['name']} {user['email']}")
+        print(f"User {user.id}: {user.name} {user.email}")
 
 #Project functions
 def add_project(args):
-
-    user = next((user for user in users if user["email"] == args.user_email), None)
+    """find user  who owns project"""
+    user = next((user for user in users if user.email == args.user_email), None)
 
     if not user:
         print("User not found")
         return
 
-    project = {
-        "id": len(projects) + 1,
-        "title": args.title,
-        "description": args.description,
-        "due_date": args.due_date,
-        "user_email": args.user_email
-    }
+    project = Project(args.title, args.description, args.due_date)
+   
 
     projects.append(project)
-    save_data("data/projects.json", projects)
+    user.add_project(project)
+    save_data(PROJECTS_FILE, [p.to_dict() for p in projects] )
+    save_data(USERS_FILE, [u.to_dict() for u in users])
 
-    print(f"Project created: {project['title']}")
+    print(f"Project created: {project.title}")
 
 def list_projects(args):
    
@@ -69,52 +75,46 @@ def list_projects(args):
         print("No projects found.")
         return
     for project in projects:
-        user = next((user for user in users if user["email"] == project["user_email"]), None)
-        owner = user["name"] if user else "Unassigned"
-
-        print(f"{project['id']}: {project['title']} | {owner}")
-
+        print(f"{project.id}: Project Title: {project.title}, Project Description: {project.description}")
 #Task functions
 def add_task(args):
-    project = next((project for project in projects if project["id"] == args.project_id), None)
-    user = next((user for user in users if user["email"] == args.assigned_to), None)
-
+    project = next((project for project in projects if project.title == args.project_title), None)
+    
     if not project:
         print("Project not found")
         return
 
-    user = find_user(users, args.assigned_to)
+    user = next((user for user in users if user.email == args.assigned_to), None)
     if not user:
         print("User not found")
         return
 
-    task = {
-        "id": len(tasks) + 1,
-        "title": args.title,
-        "status": "pending",
-        "project_id": args.project_id,
-        "assigned_to": args.assigned_to
-    }
+    task = Task(args.title,"Pending",user.email, project)
     
-
+    task.project = project
     tasks.append(task)
-    save_data("data/tasks.json", tasks)
+    project.add_task(task)
 
-    print(f"Task created: {task['title']}")
+    save_data(TASKS_FILE,  [t.to_dict() for t in tasks])
+    save_data(PROJECTS_FILE, [p.to_dict() for p in projects])
+
+    print(f"Task created: {task.title} and added to {project.title}")
+
+
 
 def complete_task(args):
-    task = next((task for task in tasks if task["id"] == args.task_id), None)
+    task = next((task for task in tasks if task.title == args.task_title), None)
 
     if not task:
         print("Task not found")
         return
 
-    task['status'] = "completed"
+    task.status = "Completed"
+    save_data(TASKS_FILE, [t.to_dict() for t in tasks])
 
-    save_data("data/tasks.json", tasks)
+    print(f"Task '{task.title}' completed")
 
-    print(f"Task {task['title']} completed")
-
+    
     
 
 #Command setup: cli
@@ -153,22 +153,19 @@ def main():
     task_parser = subparsers.add_parser("add-task")
     task_parser.add_argument("title")
     task_parser.add_argument("assigned_to")
-    task_parser.add_argument("project_id", type=int)
+    task_parser.add_argument("project_title")
     task_parser.set_defaults(func=add_task)
 
-    # # Command: list-tasks
-    # list_tasks_parser = subparsers.add_parser("list-tasks")
-    # list_tasks_parser.set_defaults(func=list_tasks)
 
     # Command: complete-task
     complete_parser = subparsers.add_parser("complete-task")
-    complete_parser.add_argument("task_id", type=int)
+    complete_parser.add_argument("task_title")
     complete_parser.set_defaults(func=complete_task)
 
 
     args = parser.parse_args()
 
-    # If user typed a valid command, run it
+    # If user typed a valid command, run 
     if hasattr(args, "func"):
         args.func(args)
     else:
